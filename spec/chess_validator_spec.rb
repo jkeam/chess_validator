@@ -34,4 +34,11 @@ describe ChessValidator do
     actual = @chess_validator.process_moves 'spec/fixture/simple_moves.txt'
     actual.must_equal expected
   end
+
+  it "bishop cannot jump" do
+    expected = %w(ILLEGAL ILLEGAL ILLEGAL ILLEGAL) 
+    actual = @chess_validator.process_moves 'spec/fixture/bishop_moves.txt'
+    actual.must_equal expected
+  end
+
 end
