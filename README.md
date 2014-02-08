@@ -30,6 +30,7 @@ As an example, see the run.sh.
 |   +-- simple_moves.txt
 +-- lib
 |   +-- chess_validator.rb
+|   +-- piece_util.rb
 +-- spec
 |   +-- fixture
 |       +-- complex_board.txt
@@ -44,7 +45,7 @@ As an example, see the run.sh.
 ```
 
 1.  inputs    - sample input files
-2.  lib       - contains the validator that has all the logic
+2.  lib       - contains the validators that has all the logic
 3.  spec      - simple spec tests
 4.  driver.rb - the main ruby script that calls the validator
 5.  run.sh    - example of how to call the driver
