@@ -73,9 +73,48 @@ module PieceUtil
     N: -> x_delta, y_delta, options {(x_delta == 2 && y_delta == 1) || (x_delta == 1 && y_delta == 2)}
   }
 
-  def self.validate_movement options
-    PIECE_TO_MOVEMENT_VALIDATOR[options[:from_piece].type.to_sym].call options[:x_delta], options[:y_delta], options
+  def self.valid_move? board, move_from, move_to
+    from_piece, to_piece = board[move_from], board[move_to]
+    valid = general_valid_move move_from, move_to, from_piece, to_piece
+    if valid
+      options = prepare_options move_from, move_to, from_piece, to_piece, board
+      valid = PIECE_TO_MOVEMENT_VALIDATOR[options[:from_piece].type.to_sym].call options[:x_delta], options[:y_delta], options
+    end
+    valid
   end
 
+  private
 
+  def self.general_valid_move move_from, move_to, from_piece, to_piece
+    kill_move = kill_move? from_piece, to_piece
+    invalid_kill_move = (from_piece && to_piece && (from_piece.color == to_piece.color))
+    move_to_empty_space = from_piece && !to_piece
+    movement = move_from != move_to
+    (movement && (move_to_empty_space || kill_move) && !invalid_kill_move) 
+  end
+
+  def self.kill_move? from_piece, to_piece
+    (from_piece && to_piece && (from_piece.color != to_piece.color))
+  end
+
+  def self.prepare_options move_from, move_to, from_piece, to_piece, board
+    kill_move = kill_move? from_piece, to_piece
+    start_x, start_y, end_x, end_y = PieceUtil::LETTER_TO_NUMBER[move_from[0]], move_from[1].to_i, PieceUtil::LETTER_TO_NUMBER[move_to[0]], move_to[1].to_i
+    x_op = ((end_x - start_x) > 0) ? :+ : :-
+    y_op = ((end_y - start_y) > 0) ? :+ : :-
+    {
+      board: board,
+      from_piece: from_piece, 
+      to_piece: to_piece, 
+      start_x: start_x,
+      start_y: start_y,
+      end_x: end_x,
+      end_y: end_y,
+      x_delta: (start_x - end_x).abs,
+      y_delta: (start_y - end_y).abs,
+      x_op: x_op,
+      y_op: y_op,
+      kill_move: kill_move 
+    }
+  end
 end

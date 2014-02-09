@@ -85,4 +85,11 @@ describe ChessValidator do
     actual.must_equal expected
   end
 
+  it "pawn cannot move backwards" do
+    @chess_validator.build_board 'spec/fixture/kill_board.txt'
+    expected = %w(ILLEGAL ILLEGAL) 
+    actual = @chess_validator.process_moves 'spec/fixture/pawn_backward_moves.txt'
+    actual.must_equal expected
+  end
+
 end
