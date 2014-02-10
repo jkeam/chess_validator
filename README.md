@@ -1,4 +1,4 @@
-# Puzzle Node Solution
+# Puzzle Node #13 Solution
 
 This is a solution for the [puzzle node question 13](http://www.puzzlenode.com/puzzles/13-chess-validator).
 
